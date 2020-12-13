@@ -10,9 +10,11 @@
       "sourceMap": true,
       "declaration": true,
       "baseUrl": "./",
+      "jsx": "react",
     },
     "include": [
       "src/**/*.ts",
+      "src/**/*.tsx",
     ],
     "exclude": [
       "node_modules",
