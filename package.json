@@ -1,0 +1,15 @@
+{
+  "name": "react-live2d-concise",
+  "version": "1.0.0",
+  "description": "Simple react live2d",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest "
+  },
+  "keywords": [
+    "react",
+    "live2d"
+  ],
+  "author": "Nworm",
+  "license": "MIT"
+}
