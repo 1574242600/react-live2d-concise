@@ -4,7 +4,9 @@
   "description": "Simple react live2d component",
   "main": "index.js",
   "scripts": {
-    "test": "jest "
+    "test": "jest ",
+    "lint": "eslint src --ext .ts",
+    "build": "tsc"
   },
   "keywords": [
     "react",
