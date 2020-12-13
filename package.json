@@ -2,7 +2,8 @@
   "name": "react-live2d-concise",
   "version": "1.0.0",
   "description": "Simple react live2d component",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest ",
     "lint": "eslint src --ext .ts",
