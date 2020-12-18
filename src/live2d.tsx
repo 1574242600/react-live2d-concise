@@ -1,5 +1,4 @@
 import React, { LegacyRef } from 'react';
-import ReactDOM from 'react-dom';
 import { Live2dProps } from './define';
 import { Delegate } from './live2d/delegate';
 
@@ -14,8 +13,7 @@ export default class Live2d extends React.Component<Live2dProps> {
     }
 
     componentDidMount(){
-        const canvas = (ReactDOM.findDOMNode(this) as HTMLCanvasElement);
-        if (Delegate.getInstance().initialize(canvas) == false) {
+        if (Delegate.getInstance().initialize((this.canvas as unknown as HTMLCanvasElement)) == false) {
             return;
           }
         

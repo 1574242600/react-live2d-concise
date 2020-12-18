@@ -11,6 +11,9 @@
       "declaration": true,
       "baseUrl": "./",
       "jsx": "react",
+      "types": [
+        "node"
+      ]
     },
     "include": [
       "src/**/*.ts",
