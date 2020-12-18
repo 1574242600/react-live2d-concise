@@ -12,12 +12,13 @@
       "baseUrl": "./",
       "jsx": "react",
       "paths": {
-        "@framework/*": ["./Framework/src/*"]
+        "@framework/*": ["./lib/Framework/src/*"]
       }
     },
     "include": [
       "src/**/*.ts",
       "src/**/*.tsx",
+      "lib/Core/*.ts",
     ],
     "exclude": [
       "node_modules",
