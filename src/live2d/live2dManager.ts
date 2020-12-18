@@ -5,9 +5,9 @@
  * that can be found at https://www.live2d.com/eula/live2d-open-software-license-agreement_en.html.
  */
 
-import { Live2DCubismFramework as cubismmatrix44 } from '@framework/math/cubismmatrix44';
-import { Live2DCubismFramework as csmvector } from '@framework/type/csmvector';
-import { Live2DCubismFramework as acubismmotion } from '@framework/motion/acubismmotion';
+import { Live2DCubismFramework as cubismmatrix44 } from '../../lib/Framework/src/math/cubismmatrix44';
+import { Live2DCubismFramework as csmvector } from '../../lib/Framework/src/type/csmvector';
+import { Live2DCubismFramework as acubismmotion } from '../../lib/Framework/src/motion/acubismmotion';
 import Csm_csmVector = csmvector.csmVector;
 import Csm_CubismMatrix44 = cubismmatrix44.CubismMatrix44;
 import ACubismMotion = acubismmotion.ACubismMotion;
