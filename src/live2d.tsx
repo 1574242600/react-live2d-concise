@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { LegacyRef } from 'react';
 import ReactDOM from 'react-dom';
 import { Live2dProps } from './define';
 import { Delegate } from './live2d/delegate';
 
 
 export default class Live2d extends React.Component<Live2dProps> {
+    wrapper: React.RefObject<unknown>;
+    canvas: LegacyRef<HTMLCanvasElement>;
+
     constructor(props: Readonly<Live2dProps>) {
         super(props);
+        this.canvas = React.createRef();
     }
 
     componentDidMount(){
@@ -20,6 +24,6 @@ export default class Live2d extends React.Component<Live2dProps> {
 
     render() {
         const { model , ...props } = this.props;
-        return (<canvas {...props} > </canvas>)
+        return (<canvas {...props} ref={this.canvas}> </canvas>)
     }
 }

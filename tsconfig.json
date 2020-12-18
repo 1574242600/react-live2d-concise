@@ -11,9 +11,6 @@
       "declaration": true,
       "baseUrl": "./",
       "jsx": "react",
-      "paths": {
-        "@framework/*": ["./lib/Framework/src/*"]
-      }
     },
     "include": [
       "src/**/*.ts",
