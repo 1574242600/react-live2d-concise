@@ -3,8 +3,8 @@ import { model3Object, model3Motion } from './define';
 /**
  * 将模型json里所有资源 url 替换为 blob url
  * @name toBlob 
- * @param modelJsonUrl String 模型json路径
- * @return 模型json的blob url
+ * @param modelJsonUrl string 模型json路径
+ * @return string 模型json的blob url
  */
 export async function toBlob(modelJsonUrl: string, /*callback?: () => void*/): Promise<string> {
     const root = modelJsonUrl.split('/').slice(0, -1).join('/');
