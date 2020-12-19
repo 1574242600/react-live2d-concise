@@ -4,18 +4,17 @@ import { Delegate } from './live2d/delegate';
 
 
 export default class Live2d extends React.Component<Live2dProps> {
-    wrapper: React.RefObject<unknown>;
-    canvas: LegacyRef<HTMLCanvasElement>;
 
+    private canvas: React.RefObject<HTMLCanvasElement> = React.createRef();
+    
     constructor(props: Readonly<Live2dProps>) {
         super(props);
-        this.canvas = React.createRef();
     }
 
     componentDidMount(){
-        if (Delegate.getInstance().initialize((this.canvas as unknown as HTMLCanvasElement)) == false) {
+        if (Delegate.getInstance().initialize((this.canvas.current as unknown as HTMLCanvasElement)) == false) {
             return;
-          }
+        }
         
         Delegate.getInstance().run();
     }

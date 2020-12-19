@@ -27,7 +27,6 @@ export class View {
   constructor() {
     this._programId = null;
     this._back = null;
-    this._gear = null;
 
     // 触控相关事件管理
     this._touchManager = new TouchManager();
@@ -77,10 +76,7 @@ export class View {
     this._viewMatrix = null;
     this._touchManager = null;
     this._deviceToScreen = null;
-
-    this._gear.release();
-    this._gear = null;
-
+    
     this._back.release();
     this._back = null;
 
@@ -96,9 +92,6 @@ export class View {
 
     if (this._back) {
       this._back.render(this._programId);
-    }
-    if (this._gear) {
-      this._gear.render(this._programId);
     }
 
     gl.flush();
@@ -137,22 +130,6 @@ export class View {
       resourcesPath + imageName,
       false,
       initBackGroundTexture
-    );
-
-    // 歯車画像初期化
-    imageName = LAppDefine.GearImageName;
-    const initGearTexture = (textureInfo: TextureInfo): void => {
-      const x = width - textureInfo.width * 0.5;
-      const y = height - textureInfo.height * 0.5;
-      const fwidth = textureInfo.width;
-      const fheight = textureInfo.height;
-      this._gear = new Sprite(x, y, fwidth, fheight, textureInfo.id);
-    };
-
-    textureManager.createTextureFromPngFile(
-      resourcesPath + imageName,
-      false,
-      initGearTexture
     );
 
     // 创建着色器
@@ -211,11 +188,6 @@ export class View {
         Utils.printMessage(`[APP]touchesEnded x: ${x} y: ${y}`);
       }
       live2DManager.onTap(x, y);
-
-      // 单击齿轮
-      if (this._gear.isHit(pointX, pointY)) {
-        live2DManager.nextScene();
-      }
     }
   }
 
@@ -261,7 +233,6 @@ export class View {
   _viewMatrix: Csm_CubismViewMatrix; // viewMatrix
   _programId: WebGLProgram; // 阴影ID
   _back: Sprite; // 背景图片
-  _gear: Sprite; // 齿轮图像
   _changeModel: boolean; // 模型切换标志
   _isClick: boolean; // 单击
 }

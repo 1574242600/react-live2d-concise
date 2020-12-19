@@ -54,11 +54,9 @@ import {
     /**
      * APPに必要な物を初期化する。
      */
-    public initialize(canvas: HTMLCanvasElement): boolean {
-      // キャンバスの作成
-      canvas.width = LAppDefine.RenderTargetWidth;
-      canvas.height = LAppDefine.RenderTargetHeight;
-  
+    public initialize(canvasElement: HTMLCanvasElement): boolean {
+      canvas = canvasElement;
+      
       // glコンテキストを初期化
       // @ts-ignore
       gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
@@ -66,16 +64,10 @@ import {
       if (!gl) {
         alert('Cannot initialize WebGL. This browser does not support.');
         gl = null;
-  
-        document.body.innerHTML =
-          'This browser does not support the <code>&lt;canvas&gt;</code> element.';
-  
+
         // gl初期化失敗
         return false;
       }
-  
-      // キャンバスを DOM に追加
-      document.body.appendChild(canvas);
   
       if (!frameBuffer) {
         frameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);

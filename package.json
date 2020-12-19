@@ -4,6 +4,7 @@
   "description": "Simple react live2d component",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
+  "type": "module",
   "scripts": {
     "test": "jest ",
     "lint": "eslint ./src --ext .ts",

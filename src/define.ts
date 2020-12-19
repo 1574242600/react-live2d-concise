@@ -5,6 +5,8 @@ export interface Live2dProps {
         name: string, 
         path: string
     ],
+    width: string | number;
+    height: string | number;
     className?: string;
     id?: string;
     style?: React.CSSProperties;
