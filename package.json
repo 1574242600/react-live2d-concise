@@ -1,6 +1,6 @@
 {
   "name": "react-live2d-concise",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple react live2d component",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -16,7 +16,12 @@
     "live2d"
   ],
   "author": "Nworm",
-  "license": "MIT",
+  "license": "",
+  "homepage": "https://github.com/1574242600/react-live2d-concise",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1574242600/react-live2d-concise.git"
+  },
   "dependencies": {
     "@typescript-eslint/parser": "^4.10.0",
     "pre-commit": "^1.2.2",
