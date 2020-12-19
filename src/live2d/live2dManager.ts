@@ -6,9 +6,7 @@
  */
 
 import { Live2DCubismFramework as cubismmatrix44 } from '../../lib/Framework/src/math/cubismmatrix44';
-import { Live2DCubismFramework as csmvector } from '../../lib/Framework/src/type/csmvector';
 import { Live2DCubismFramework as acubismmotion } from '../../lib/Framework/src/motion/acubismmotion';
-import Csm_csmVector = csmvector.csmVector;
 import Csm_CubismMatrix44 = cubismmatrix44.CubismMatrix44;
 import ACubismMotion = acubismmotion.ACubismMotion;
 
@@ -21,7 +19,7 @@ export let s_instance: Live2DManager = null;
 
 /**
  * サンプルアプリケーションにおいてCubismModelを管理するクラス
- * モデル生成と破棄、タップイベントの処理、モデル切り替えを行う。
+ * モデル生成と破棄、タップイベントの処理
  */
 export class Live2DManager {
   /**
@@ -50,44 +48,17 @@ export class Live2DManager {
   }
 
   /**
-   * 現在のシーンで保持しているモデルを返す。
-   *
-   * @param no モデルリストのインデックス値
-   * @return モデルのインスタンスを返す。インデックス値が範囲外の場合はNULLを返す。
-   */
-  public getModel(no: number): Model {
-    if (no < this._models.getSize()) {
-      return this._models.at(no);
-    }
-
-    return null;
-  }
-
-  /**
-   * 現在のシーンで保持しているすべてのモデルを解放する
-   */
-  public releaseAllModel(): void {
-    for (let i = 0; i < this._models.getSize(); i++) {
-      this._models.at(i).release();
-      this._models.set(i, null);
-    }
-
-    this._models.clear();
-  }
-
-  /**
    * 画面をドラッグした時の処理
    *
    * @param x 画面のX座標
    * @param y 画面のY座標
    */
   public onDrag(x: number, y: number): void {
-    for (let i = 0; i < this._models.getSize(); i++) {
-      const model: Model = this.getModel(i);
 
-      if (model) {
-        model.setDragging(x, y);
-      }
+    const model: Model = this._model;
+
+    if (model) {
+      model.setDragging(x, y);
     }
   }
 
@@ -104,28 +75,24 @@ export class Live2DManager {
       );
     }
 
-    for (let i = 0; i < this._models.getSize(); i++) {
-      if (this._models.at(i).hitTest(LAppDefine.HitAreaNameHead, x, y)) {
-        if (LAppDefine.DebugLogEnable) {
-          Utils.printMessage(
-            `[APP]hit area: [${LAppDefine.HitAreaNameHead}]`
-          );
-        }
-        this._models.at(i).setRandomExpression();
-      } else if (this._models.at(i).hitTest(LAppDefine.HitAreaNameBody, x, y)) {
-        if (LAppDefine.DebugLogEnable) {
-          Utils.printMessage(
-            `[APP]hit area: [${LAppDefine.HitAreaNameBody}]`
-          );
-        }
-        this._models
-          .at(i)
-          .startRandomMotion(
-            LAppDefine.MotionGroupTapBody,
-            LAppDefine.PriorityNormal,
-            this._finishedMotion
-          );
+    if (this._model.hitTest(LAppDefine.HitAreaNameHead, x, y)) {
+      if (LAppDefine.DebugLogEnable) {
+        Utils.printMessage(
+          `[APP]hit area: [${LAppDefine.HitAreaNameHead}]`
+        );
       }
+      this._model.setRandomExpression();
+    } else if (this._model.hitTest(LAppDefine.HitAreaNameBody, x, y)) {
+      if (LAppDefine.DebugLogEnable) {
+        Utils.printMessage(
+          `[APP]hit area: [${LAppDefine.HitAreaNameBody}]`
+        );
+      }
+      this._model.startRandomMotion(
+        LAppDefine.MotionGroupTapBody,
+        LAppDefine.PriorityNormal,
+        this._finishedMotion
+      );
     }
   }
 
@@ -144,47 +111,24 @@ export class Live2DManager {
     }
 
     const saveProjection: Csm_CubismMatrix44 = projection.clone();
-    const modelCount: number = this._models.getSize();
 
-    for (let i = 0; i < modelCount; ++i) {
-      const model: Model = this.getModel(i);
-      projection = saveProjection.clone();
+    const model: Model = this._model;
+    projection = saveProjection.clone();
 
-      model.update();
-      model.draw(projection); // 参照渡しなのでprojectionは変質する。
-    }
+    model.update();
+    model.draw(projection); // 参照渡しなのでprojectionは変質する。
+
   }
 
-  /**
-   * 次のシーンに切りかえる
-   * サンプルアプリケーションではモデルセットの切り替えを行う。
-   */
-  public nextScene(): void {
-    const no: number = (this._sceneIndex + 1) % LAppDefine.ModelDirSize;
-    this.changeScene(no);
-  }
-
-  /**
-   * シーンを切り替える
-   * サンプルアプリケーションではモデルセットの切り替えを行う。
-   */
-  public changeScene(index: number): void {
-    this._sceneIndex = index;
-    if (LAppDefine.DebugLogEnable) {
-      Utils.printMessage(`[APP]model index: ${this._sceneIndex}`);
-    }
-
-    // ModelDir[]に保持したディレクトリ名から
+  public initialize(): void {
     // model3.jsonのパスを決定する。
     // ディレクトリ名とmodel3.jsonの名前を一致させておくこと。
-    const model: string = LAppDefine.ModelDir[index];
+    const model: string = LAppDefine.Model;
     const modelPath: string = LAppDefine.ResourcesPath + model + '/';
-    let modelJsonName: string = LAppDefine.ModelDir[index];
+    let modelJsonName: string = LAppDefine.Model;
     modelJsonName += '.model3.json';
 
-    this.releaseAllModel();
-    this._models.pushBack(new Model());
-    this._models.at(0).loadAssets(modelPath, modelJsonName);
+    this._model.loadAssets(modelPath, modelJsonName);
   }
 
   /**
@@ -192,15 +136,12 @@ export class Live2DManager {
    */
   constructor() {
     this._viewMatrix = new Csm_CubismMatrix44();
-    this._models = new Csm_csmVector<Model>();
-    this._sceneIndex = 0;
-    this.changeScene(this._sceneIndex);
+    this._model = new Model();
+    this.initialize()
   }
 
   _viewMatrix: Csm_CubismMatrix44; // モデル描画に用いるview行列
-  _models: Csm_csmVector<Model>; // モデルインスタンスのコンテナ
-  _sceneIndex: number; // 表示するシーンのインデックス値
-  // モーション再生終了のコールバック関数
+  _model: Model;
   _finishedMotion = (self: ACubismMotion): void => {
     Utils.printMessage('Motion Finished:');
     console.log(self);
