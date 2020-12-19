@@ -170,7 +170,7 @@ export class View {
    * @param pointX スクリーンX座標
    * @param pointY スクリーンY座標
    */
-    public onTouchesEnded(): void {
+    public onTouchesEnded(/*pointX: number, pointY: number*/): void {
     // 触摸结束
         const live2DManager: Live2DManager = Live2DManager.getInstance();
         live2DManager.onDrag(0.0, 0.0);

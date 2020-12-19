@@ -58,12 +58,11 @@ export class Delegate {
         canvas = canvasElement;
       
         // glコンテキストを初期化
-
+        
         /* eslint-disable */
         // @ts-ignore
         gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
         /* eslint-enable */
-
         if (!gl) {
             alert('Cannot initialize WebGL. This browser does not support.');
             gl = null;
@@ -318,18 +317,18 @@ function onMouseMoved(e: MouseEvent): void {
 /**
    * クリックが終了したら呼ばれる。
    */
-function onClickEnded(e: MouseEvent): void {
+function onClickEnded(/*e: MouseEvent*/): void {
     Delegate.getInstance()._captured = false;
     if (!Delegate.getInstance()._view) {
         Utils.printMessage('view notfound');
         return;
     }
   
-    const rect = (e.target as Element).getBoundingClientRect();
-    const posX: number = e.clientX - rect.left;
-    const posY: number = e.clientY - rect.top;
+    //const rect = (e.target as Element).getBoundingClientRect();
+    //const posX: number = e.clientX - rect.left;
+    //const posY: number = e.clientY - rect.top;
   
-    Delegate.getInstance()._view.onTouchesEnded();
+    Delegate.getInstance()._view.onTouchesEnded(/*posX, posY*/);
 }
   
 /**
@@ -373,7 +372,7 @@ function onTouchMoved(e: TouchEvent): void {
 /**
    * タッチが終了したら呼ばれる。
    */
-function onTouchEnded(e: TouchEvent): void {
+function onTouchEnded(/*e: TouchEvent*/): void {
     Delegate.getInstance()._captured = false;
   
     if (!Delegate.getInstance()._view) {
@@ -381,18 +380,17 @@ function onTouchEnded(e: TouchEvent): void {
         return;
     }
   
-    const rect = (e.target as Element).getBoundingClientRect();
+    //const rect = (e.target as Element).getBoundingClientRect();
+    //const posX = e.changedTouches[0].clientX - rect.left;
+    //const posY = e.changedTouches[0].clientY - rect.top;
   
-    const posX = e.changedTouches[0].clientX - rect.left;
-    const posY = e.changedTouches[0].clientY - rect.top;
-  
-    Delegate.getInstance()._view.onTouchesEnded();
+    Delegate.getInstance()._view.onTouchesEnded(/*posX, posY*/);
 }
   
 /**
    * タッチがキャンセルされると呼ばれる。
    */
-function onTouchCancel(e: TouchEvent): void {
+function onTouchCancel(/*e: TouchEvent*/): void {
     Delegate.getInstance()._captured = false;
   
     if (!Delegate.getInstance()._view) {
@@ -400,11 +398,10 @@ function onTouchCancel(e: TouchEvent): void {
         return;
     }
   
-    const rect = (e.target as Element).getBoundingClientRect();
+    //const rect = (e.target as Element).getBoundingClientRect();
+    //const posX = e.changedTouches[0].clientX - rect.left;
+    //const posY = e.changedTouches[0].clientY - rect.top;
   
-    const posX = e.changedTouches[0].clientX - rect.left;
-    const posY = e.changedTouches[0].clientY - rect.top;
-  
-    Delegate.getInstance()._view.onTouchesEnded();
+    Delegate.getInstance()._view.onTouchesEnded(/*posX, posY*/);
 }
   
