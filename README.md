@@ -46,6 +46,10 @@ class App extends React.Component {
 
 ```
 
+## Demo
+demo1: https://nworm.icu/react-live2d-concise/demo1/
+
+
 ## Documentation
 Components:
 
