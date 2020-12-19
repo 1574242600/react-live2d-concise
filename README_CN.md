@@ -57,6 +57,7 @@ class App extends React.Component {
 |id       | Element id                   | string           | undefined         |
 |style    | React CSS                    | React.CSSProperties | undefined      |
 <br />
+
 ---------------------------------------------------------------------------------
 toBlob() 
 
