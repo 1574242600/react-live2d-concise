@@ -68,10 +68,12 @@ toBlob()
  * @return string blob url of model json
  */
 ```
+
 ## Precautions 
 Only supports moc3 and above models
 <br />
 <br />
+
 ## Use open source projects
 Thx.
 - [CubismWebFramework](https://github.com/Live2D/CubismWebFramework)- see: [LICENSE](https://github.com/Live2D/CubismWebFramework/blob/develop/LICENSE.md)
