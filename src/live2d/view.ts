@@ -11,9 +11,8 @@ import Csm_CubismViewMatrix = cubismviewmatrix.CubismViewMatrix;
 import Csm_CubismMatrix44 = cubismMatrix44.CubismMatrix44;
 import { TouchManager } from './touchManager';
 import { Live2DManager } from './live2dManager';
-import { Delegate, canvas, gl } from './delegate';
+import { canvas, gl } from './delegate';
 import { Sprite } from './sprite';
-import { TextureInfo } from './textureManager';
 import { Utils } from './utils';
 import * as Define from './define';
 
