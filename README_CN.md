@@ -59,6 +59,7 @@ class App extends React.Component {
 <br />
 ---------------------------------------------------------------------------------
 toBlob() 
+
 ```js
 /**
  * 将模型json里所有资源 url 替换为 blob url
@@ -67,10 +68,12 @@ toBlob()
  * @return string 模型json的blob url
  */
 ```
+
 ## 注意事项 
 仅支持moc3及以上版本的模型
 <br />
 <br />
+
 ## 使用开源项目
 Thx.
 - [CubismWebFramework](https://github.com/Live2D/CubismWebFramework) - see: [LICENSE](https://github.com/Live2D/CubismWebFramework/blob/develop/LICENSE.md)
