@@ -6,6 +6,11 @@ export function setModelBlobUrl(blobUrl: string) {
     modelBlobUrl = blobUrl;
 }
 
+export interface Live2dDefaultProps {
+    width: string | number;
+    height: string | number;
+}
+
 export interface Live2dProps {
     model: [
         path: string,
