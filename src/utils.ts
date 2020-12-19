@@ -70,8 +70,8 @@ export async function toBlob(modelJsonUrl: string, /*callback?: () => void*/): P
             asyncList.push(async () => {
                 const path = exp.File;
                 model.FileReferences.Expressions[index].File = await blobFetch(`${root}/${path}`, path);
-            })
-        })
+            });
+        });
     }
 
     await Promise.all(asyncList.map(fn => fn()));

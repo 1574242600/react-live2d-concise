@@ -403,10 +403,9 @@ export class Model extends CubismUserModel {
                 }
 
                 // 将纹理加载到WebGL纹理单元中
-                let texturePath = this._modelSetting.getTextureFileName(
+                const texturePath = this._modelSetting.getTextureFileName(
                     modelTextureNumber
                 );
-                texturePath = texturePath;
 
                 // 加载完成后要调用的回调函数
                 const onLoad = (textureInfo: TextureInfo): void => {
