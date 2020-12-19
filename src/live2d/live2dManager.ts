@@ -13,7 +13,7 @@ import ACubismMotion = acubismmotion.ACubismMotion;
 import { Model } from './model';
 import { Utils } from './utils';
 import { canvas } from './delegate';
-import * as LAppDefine from './lappdefine';
+import * as LAppDefine from './define';
 
 export let s_instance: Live2DManager = null;
 

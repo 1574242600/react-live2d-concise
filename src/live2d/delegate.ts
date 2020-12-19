@@ -14,7 +14,7 @@ import { View } from './view';
 import { Utils } from './utils';
 import { TextureManager } from './textureManager';
 import { Live2DManager } from './live2dManager';
-import * as LAppDefine from './lappdefine';
+import * as LAppDefine from './define';
   
 export let canvas: HTMLCanvasElement = null;
 export let s_instance: Delegate = null;

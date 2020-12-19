@@ -15,7 +15,7 @@ import { Delegate, canvas, gl } from './delegate';
 import { Sprite } from './sprite';
 import { TextureInfo } from './textureManager';
 import { Utils } from './utils';
-import * as LAppDefine from './lappdefine';
+import * as LAppDefine from './define';
 
 /**
  * 绘画类

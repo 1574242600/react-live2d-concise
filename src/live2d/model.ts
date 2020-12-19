@@ -46,7 +46,7 @@ import CubismDefaultParameterId = cubismdefaultparameterid;
 import { Utils } from './utils';
 import { gl, canvas, frameBuffer, Delegate } from './delegate';
 import { TextureInfo } from './textureManager';
-import * as LAppDefine from './lappdefine';
+import * as LAppDefine from './define';
 import 'whatwg-fetch';
 
 enum LoadStep {
