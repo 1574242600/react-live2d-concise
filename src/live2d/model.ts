@@ -46,7 +46,7 @@ import CubismDefaultParameterId = cubismdefaultparameterid;
 import { Utils } from './utils';
 import { gl, canvas, frameBuffer, Delegate } from './delegate';
 import { TextureInfo } from './textureManager';
-import * as LAppDefine from './define';
+import * as Define from './define';
 import 'whatwg-fetch';
 
 enum LoadStep {
@@ -85,10 +85,9 @@ export class Model extends CubismUserModel {
    * @param dir
    * @param fileName
    */
-    public loadAssets(dir: string, fileName: string): void {
-        this._modelHomeDir = dir;
+    public loadAssets(modelBlobUrl: string): void {
 
-        fetch(`${this._modelHomeDir}/${fileName}`)
+        fetch(modelBlobUrl)
             .then(response => response.arrayBuffer())
             .then(arrayBuffer => {
                 const setting: ICubismModelSetting = new CubismModelSettingJson(
@@ -120,7 +119,7 @@ export class Model extends CubismUserModel {
         if (this._modelSetting.getModelFileName() != '') {
             const modelFileName = this._modelSetting.getModelFileName();
 
-            fetch(`${this._modelHomeDir}/${modelFileName}`)
+            fetch(modelFileName)
                 .then(response => response.arrayBuffer())
                 .then(arrayBuffer => {
                     this.loadModel(arrayBuffer);
@@ -146,7 +145,7 @@ export class Model extends CubismUserModel {
                         i
                     );
 
-                    fetch(`${this._modelHomeDir}/${expressionFileName}`)
+                    fetch(expressionFileName)
                         .then(response => response.arrayBuffer())
                         .then(arrayBuffer => {
                             const motion: ACubismMotion = this.loadExpression(
@@ -188,7 +187,7 @@ export class Model extends CubismUserModel {
             if (this._modelSetting.getPhysicsFileName() != '') {
                 const physicsFileName = this._modelSetting.getPhysicsFileName();
 
-                fetch(`${this._modelHomeDir}/${physicsFileName}`)
+                fetch(physicsFileName)
                     .then(response => response.arrayBuffer())
                     .then(arrayBuffer => {
                         this.loadPhysics(arrayBuffer, arrayBuffer.byteLength);
@@ -212,7 +211,7 @@ export class Model extends CubismUserModel {
             if (this._modelSetting.getPoseFileName() != '') {
                 const poseFileName = this._modelSetting.getPoseFileName();
 
-                fetch(`${this._modelHomeDir}/${poseFileName}`)
+                fetch(poseFileName)
                     .then(response => response.arrayBuffer())
                     .then(arrayBuffer => {
                         this.loadPose(arrayBuffer, arrayBuffer.byteLength);
@@ -283,7 +282,7 @@ export class Model extends CubismUserModel {
             if (this._modelSetting.getUserDataFile() != '') {
                 const userDataFile = this._modelSetting.getUserDataFile();
 
-                fetch(`${this._modelHomeDir}/${userDataFile}`)
+                fetch(userDataFile)
                     .then(response => response.arrayBuffer())
                     .then(arrayBuffer => {
                         this.loadUserData(arrayBuffer, arrayBuffer.byteLength);
@@ -407,7 +406,7 @@ export class Model extends CubismUserModel {
                 let texturePath = this._modelSetting.getTextureFileName(
                     modelTextureNumber
                 );
-                texturePath = this._modelHomeDir + texturePath;
+                texturePath = texturePath;
 
                 // 加载完成后要调用的回调函数
                 const onLoad = (textureInfo: TextureInfo): void => {
@@ -462,8 +461,8 @@ export class Model extends CubismUserModel {
         if (this._motionManager.isFinished()) {
             // 如果没有动作播放，它将从待机动作中随机播放
             this.startRandomMotion(
-                LAppDefine.MotionGroupIdle,
-                LAppDefine.PriorityIdle
+                Define.MotionGroupIdle,
+                Define.PriorityIdle
             );
         } else {
             motionUpdated = this._motionManager.updateMotion(
@@ -546,7 +545,7 @@ export class Model extends CubismUserModel {
         priority: number,
         onFinishedMotionHandler?: FinishedMotionCallback
     ): CubismMotionQueueEntryHandle {
-        if (priority == LAppDefine.PriorityForce) {
+        if (priority == Define.PriorityForce) {
             this._motionManager.setReservePriority(priority);
         } else if (!this._motionManager.reserveMotion(priority)) {
             if (this._debugMode) {
@@ -563,7 +562,7 @@ export class Model extends CubismUserModel {
         let autoDelete = false;
 
         if (motion == null) {
-            fetch(`${this._modelHomeDir}/${motionFileName}`)
+            fetch(motionFileName)
                 .then(response => response.arrayBuffer())
                 .then(arrayBuffer => {
                     motion = this.loadMotion(
@@ -642,7 +641,7 @@ export class Model extends CubismUserModel {
             this._expressionManager.startMotionPriority(
                 motion,
                 false,
-                LAppDefine.PriorityForce
+                Define.PriorityForce
             );
         } else {
             if (this._debugMode) {
@@ -721,7 +720,7 @@ export class Model extends CubismUserModel {
                 );
             }
 
-            fetch(`${this._modelHomeDir}/${motionFileName}`)
+            fetch(motionFileName)
                 .then(response => response.arrayBuffer())
                 .then(arrayBuffer => {
                     const tmpMotion: CubismMotion = this.loadMotion(
@@ -817,7 +816,6 @@ export class Model extends CubismUserModel {
         super();
 
         this._modelSetting = null;
-        this._modelHomeDir = null;
         this._userTimeSeconds = 0.0;
 
         this._eyeBlinkIds = new csmVector<CubismIdHandle>();
@@ -856,7 +854,6 @@ export class Model extends CubismUserModel {
     }
 
   _modelSetting: ICubismModelSetting; //模型设置信息
-  _modelHomeDir: string; //模型设置所在的目录
   _userTimeSeconds: number; //增量时间的积分值[秒]
 
   _eyeBlinkIds: csmVector<CubismIdHandle>; //模型中设置的闪烁功能的参数ID

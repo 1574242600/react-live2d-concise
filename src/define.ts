@@ -1,5 +1,11 @@
 import React from 'react';
 
+export let modelBlobUrl: string = null;
+
+export function setModelBlobUrl(blobUrl: string) {
+    modelBlobUrl = blobUrl;
+}
+
 export interface Live2dProps {
     model: [
         path: string,

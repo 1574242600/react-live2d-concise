@@ -1,5 +1,5 @@
 import React from 'react';
-import { Live2dProps } from './define';
+import { Live2dProps, setModelBlobUrl } from './define';
 import { Delegate } from './live2d/delegate';
 
 
@@ -11,6 +11,7 @@ export default class Live2d extends React.Component<Live2dProps> {
     }
 
     componentDidMount(): void {
+        setModelBlobUrl(this.props.model[0]);
         if (Delegate.getInstance().initialize(this.canvas.current) == false) {
             return;
         }

@@ -22,23 +22,9 @@ export const ViewLogicalMaxRight = 2.0;
 export const ViewLogicalMaxBottom = -2.0;
 export const ViewLogicalMaxTop = 2.0;
 
-// 相対パス
-//export const ResourcesPath = '../../Resources/';
-export const ResourcesPath = './Resources/';
 
 // モデルの後ろにある背景の画像ファイル
 export const BackImageName = '';
-
-// 歯車
-export const GearImageName = '';
-
-// 終了ボタン
-export const PowerImageName = '';
-
-// モデル定義---------------------------------------------
-// モデルを配置したディレクトリ名の配列
-// ディレクトリ名とmodel3.jsonの名前を一致させておくこと
-export const Model = 'Yoshino';
 
 // 外部定義ファイル（json）と合わせる
 export const MotionGroupIdle = 'Idle'; // アイドリング
@@ -61,6 +47,3 @@ export const DebugTouchLogEnable = false;
 // Frameworkから出力するログのレベル設定
 export const CubismLoggingLevel: LogLevel = LogLevel.LogLevel_Verbose;
 
-// デフォルトのレンダーターゲットサイズ
-export const RenderTargetWidth = 1920;
-export const RenderTargetHeight = window.innerHeight;

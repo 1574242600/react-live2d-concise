@@ -9,11 +9,12 @@ import { Live2DCubismFramework as cubismmatrix44 } from '../../lib/Framework/src
 import { Live2DCubismFramework as acubismmotion } from '../../lib/Framework/src/motion/acubismmotion';
 import Csm_CubismMatrix44 = cubismmatrix44.CubismMatrix44;
 import ACubismMotion = acubismmotion.ACubismMotion;
-
 import { Model } from './model';
 import { Utils } from './utils';
 import { canvas } from './delegate';
-import * as LAppDefine from './define';
+import { modelBlobUrl } from '../define';
+import * as Define from './define';
+
 
 export let s_instance: Live2DManager = null;
 
@@ -69,28 +70,28 @@ export class Live2DManager {
    * @param y 画面のY座標
    */
     public onTap(x: number, y: number): void {
-        if (LAppDefine.DebugLogEnable) {
+        if (Define.DebugLogEnable) {
             Utils.printMessage(
                 `[APP]tap point: {x: ${x.toFixed(2)} y: ${y.toFixed(2)}}`
             );
         }
 
-        if (this._model.hitTest(LAppDefine.HitAreaNameHead, x, y)) {
-            if (LAppDefine.DebugLogEnable) {
+        if (this._model.hitTest(Define.HitAreaNameHead, x, y)) {
+            if (Define.DebugLogEnable) {
                 Utils.printMessage(
-                    `[APP]hit area: [${LAppDefine.HitAreaNameHead}]`
+                    `[APP]hit area: [${Define.HitAreaNameHead}]`
                 );
             }
             this._model.setRandomExpression();
-        } else if (this._model.hitTest(LAppDefine.HitAreaNameBody, x, y)) {
-            if (LAppDefine.DebugLogEnable) {
+        } else if (this._model.hitTest(Define.HitAreaNameBody, x, y)) {
+            if (Define.DebugLogEnable) {
                 Utils.printMessage(
-                    `[APP]hit area: [${LAppDefine.HitAreaNameBody}]`
+                    `[APP]hit area: [${Define.HitAreaNameBody}]`
                 );
             }
             this._model.startRandomMotion(
-                LAppDefine.MotionGroupTapBody,
-                LAppDefine.PriorityNormal,
+                Define.MotionGroupTapBody,
+                Define.PriorityNormal,
                 this._finishedMotion
             );
         }
@@ -121,14 +122,7 @@ export class Live2DManager {
     }
 
     public initialize(): void {
-    // model3.jsonのパスを決定する。
-    // ディレクトリ名とmodel3.jsonの名前を一致させておくこと。
-        const model: string = LAppDefine.Model;
-        const modelPath: string = LAppDefine.ResourcesPath + model + '/';
-        let modelJsonName: string = LAppDefine.Model;
-        modelJsonName += '.model3.json';
-
-        this._model.loadAssets(modelPath, modelJsonName);
+        this._model.loadAssets(modelBlobUrl);
     }
 
     /**
