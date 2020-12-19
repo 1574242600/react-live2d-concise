@@ -38,7 +38,7 @@ export const PowerImageName = '';
 // モデル定義---------------------------------------------
 // モデルを配置したディレクトリ名の配列
 // ディレクトリ名とmodel3.jsonの名前を一致させておくこと
-export const Model: string = 'Yoshino';
+export const Model = 'Yoshino';
 
 // 外部定義ファイル（json）と合わせる
 export const MotionGroupIdle = 'Idle'; // アイドリング

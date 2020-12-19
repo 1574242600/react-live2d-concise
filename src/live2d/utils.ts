@@ -22,12 +22,12 @@ export class Utils {
      * }
      */
     public static loadFileAsBytes(
-      filePath: string,
-      callback: (arrayBuffer: ArrayBuffer, size: number) => void
+        filePath: string,
+        callback: (arrayBuffer: ArrayBuffer, size: number) => void
     ): void {
-      fetch(filePath)
-        .then(response => response.arrayBuffer())
-        .then(arrayBuffer => callback(arrayBuffer, arrayBuffer.byteLength));
+        fetch(filePath)
+            .then(response => response.arrayBuffer())
+            .then(arrayBuffer => callback(arrayBuffer, arrayBuffer.byteLength));
     }
   
     /**
@@ -35,13 +35,13 @@ export class Utils {
      * @return デルタ時間[ms]
      */
     public static getDeltaTime(): number {
-      return this.s_deltaTime;
+        return this.s_deltaTime;
     }
   
     public static updateTime(): void {
-      this.s_currentFrame = Date.now();
-      this.s_deltaTime = (this.s_currentFrame - this.s_lastFrame) / 1000;
-      this.s_lastFrame = this.s_currentFrame;
+        this.s_currentFrame = Date.now();
+        this.s_deltaTime = (this.s_currentFrame - this.s_lastFrame) / 1000;
+        this.s_lastFrame = this.s_currentFrame;
     }
   
     /**
@@ -49,7 +49,7 @@ export class Utils {
      * @param message 文字列
      */
     public static printMessage(message: string): void {
-      console.log(message);
+        console.log(message);
     }
   
     static lastUpdate = Date.now();
@@ -57,5 +57,5 @@ export class Utils {
     static s_currentFrame = 0.0;
     static s_lastFrame = 0.0;
     static s_deltaTime = 0.0;
-  }
+}
   

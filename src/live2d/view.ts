@@ -21,212 +21,212 @@ import * as LAppDefine from './lappdefine';
  * 绘画类
  */
 export class View {
-  /**
+    /**
    * コンストラクタ
    */
-  constructor() {
-    this._programId = null;
-    this._back = null;
+    constructor() {
+        this._programId = null;
+        this._back = null;
 
-    // 触控相关事件管理
-    this._touchManager = new TouchManager();
+        // 触控相关事件管理
+        this._touchManager = new TouchManager();
 
-    // 从设备坐标转换为屏幕坐标
-    this._deviceToScreen = new Csm_CubismMatrix44();
+        // 从设备坐标转换为屏幕坐标
+        this._deviceToScreen = new Csm_CubismMatrix44();
 
-    // 用于缩放和移动屏幕显示的矩阵
-    this._viewMatrix = new Csm_CubismViewMatrix();
-  }
+        // 用于缩放和移动屏幕显示的矩阵
+        this._viewMatrix = new Csm_CubismViewMatrix();
+    }
 
-  /**
+    /**
    * 初始化
    */
-  public initialize(): void {
-    const { width, height } = canvas;
+    public initialize(): void {
+        const { width, height } = canvas;
 
-    const ratio: number = height / width;
-    const left: number = LAppDefine.ViewLogicalLeft;
-    const right: number = LAppDefine.ViewLogicalRight;
-    const bottom: number = -ratio;
-    const top: number = ratio;
+        const ratio: number = height / width;
+        const left: number = LAppDefine.ViewLogicalLeft;
+        const right: number = LAppDefine.ViewLogicalRight;
+        const bottom: number = -ratio;
+        const top: number = ratio;
 
-    this._viewMatrix.setScreenRect(left, right, bottom, top); // 与设备相对应的屏幕范围。 X的左边缘，X的右边缘，Y的下边缘，Y的上边缘
+        this._viewMatrix.setScreenRect(left, right, bottom, top); // 与设备相对应的屏幕范围。 X的左边缘，X的右边缘，Y的下边缘，Y的上边缘
 
-    const screenW: number = Math.abs(left - right);
-    this._deviceToScreen.scaleRelative(screenW / width, -screenW / width);
-    this._deviceToScreen.translateRelative(-width * 0.5, -height * 0.5);
+        const screenW: number = Math.abs(left - right);
+        this._deviceToScreen.scaleRelative(screenW / width, -screenW / width);
+        this._deviceToScreen.translateRelative(-width * 0.5, -height * 0.5);
 
-    // 显示范围设定
-    this._viewMatrix.setMaxScale(LAppDefine.ViewMaxScale); // 限界拡張率
-    this._viewMatrix.setMinScale(LAppDefine.ViewMinScale); // 限界縮小率
+        // 显示范围设定
+        this._viewMatrix.setMaxScale(LAppDefine.ViewMaxScale); // 限界拡張率
+        this._viewMatrix.setMinScale(LAppDefine.ViewMinScale); // 限界縮小率
 
-    // 可显示的最大范围
-    this._viewMatrix.setMaxScreenRect(
-      LAppDefine.ViewLogicalMaxLeft,
-      LAppDefine.ViewLogicalMaxRight,
-      LAppDefine.ViewLogicalMaxBottom,
-      LAppDefine.ViewLogicalMaxTop
-    );
-  }
+        // 可显示的最大范围
+        this._viewMatrix.setMaxScreenRect(
+            LAppDefine.ViewLogicalMaxLeft,
+            LAppDefine.ViewLogicalMaxRight,
+            LAppDefine.ViewLogicalMaxBottom,
+            LAppDefine.ViewLogicalMaxTop
+        );
+    }
 
-  /**
+    /**
    * 释放
    */
-  public release(): void {
-    this._viewMatrix = null;
-    this._touchManager = null;
-    this._deviceToScreen = null;
+    public release(): void {
+        this._viewMatrix = null;
+        this._touchManager = null;
+        this._deviceToScreen = null;
     
-    this._back.release();
-    this._back = null;
+        this._back.release();
+        this._back = null;
 
-    gl.deleteProgram(this._programId);
-    this._programId = null;
-  }
+        gl.deleteProgram(this._programId);
+        this._programId = null;
+    }
 
-  /**
+    /**
    * 绘制
    */
-  public render(): void {
-    gl.useProgram(this._programId);
+    public render(): void {
+        gl.useProgram(this._programId);
 
-    if (this._back) {
-      this._back.render(this._programId);
+        if (this._back) {
+            this._back.render(this._programId);
+        }
+
+        gl.flush();
+
+        const live2DManager: Live2DManager = Live2DManager.getInstance();
+
+        live2DManager.onUpdate();
     }
 
-    gl.flush();
-
-    const live2DManager: Live2DManager = Live2DManager.getInstance();
-
-    live2DManager.onUpdate();
-  }
-
-  /**
+    /**
    * 初始化图像
    */
-  public initializeSprite(): void {
-    const width: number = canvas.width;
-    const height: number = canvas.height;
+    public initializeSprite(): void {
+        const width: number = canvas.width;
+        const height: number = canvas.height;
 
-    const textureManager = Delegate.getInstance().getTextureManager();
-    const resourcesPath = LAppDefine.ResourcesPath;
+        const textureManager = Delegate.getInstance().getTextureManager();
+        const resourcesPath = LAppDefine.ResourcesPath;
 
-    let imageName = '';
+        let imageName = '';
 
-    // 背景画像初期化
-    imageName = LAppDefine.BackImageName;
+        // 背景画像初期化
+        imageName = LAppDefine.BackImageName;
 
-    // 创建一个回调函数，因为它是异步的
-    const initBackGroundTexture = (textureInfo: TextureInfo): void => {
-      const x: number = width * 0.5;
-      const y: number = height * 0.5;
+        // 创建一个回调函数，因为它是异步的
+        const initBackGroundTexture = (textureInfo: TextureInfo): void => {
+            const x: number = width * 0.5;
+            const y: number = height * 0.5;
 
-      const fwidth = textureInfo.width * 2.0;
-      const fheight = height * 0.95;
-      this._back = new Sprite(x, y, fwidth, fheight, textureInfo.id);
-    };
+            const fwidth = textureInfo.width * 2.0;
+            const fheight = height * 0.95;
+            this._back = new Sprite(x, y, fwidth, fheight, textureInfo.id);
+        };
 
-    textureManager.createTextureFromPngFile(
-      resourcesPath + imageName,
-      false,
-      initBackGroundTexture
-    );
+        textureManager.createTextureFromPngFile(
+            resourcesPath + imageName,
+            false,
+            initBackGroundTexture
+        );
 
-    // 创建着色器
-    if (this._programId == null) {
-      this._programId = Delegate.getInstance().createShader();
+        // 创建着色器
+        if (this._programId == null) {
+            this._programId = Delegate.getInstance().createShader();
+        }
     }
-  }
 
-  /**
+    /**
    * 触摸时调用
    *
    * @param pointX スクリーンX座標
    * @param pointY スクリーンY座標
    */
-  public onTouchesBegan(pointX: number, pointY: number): void {
-    this._touchManager.touchesBegan(pointX, pointY);
-  }
+    public onTouchesBegan(pointX: number, pointY: number): void {
+        this._touchManager.touchesBegan(pointX, pointY);
+    }
 
-  /**
+    /**
    * 如果指针在触摸时移动，则调用
    *
    * @param pointX スクリーンX座標
    * @param pointY スクリーンY座標
    */
-  public onTouchesMoved(pointX: number, pointY: number): void {
-    const viewX: number = this.transformViewX(this._touchManager.getX());
-    const viewY: number = this.transformViewY(this._touchManager.getY());
+    public onTouchesMoved(pointX: number, pointY: number): void {
+        const viewX: number = this.transformViewX(this._touchManager.getX());
+        const viewY: number = this.transformViewY(this._touchManager.getY());
 
-    this._touchManager.touchesMoved(pointX, pointY);
+        this._touchManager.touchesMoved(pointX, pointY);
 
-    const live2DManager: Live2DManager = Live2DManager.getInstance();
-    live2DManager.onDrag(viewX, viewY);
-  }
+        const live2DManager: Live2DManager = Live2DManager.getInstance();
+        live2DManager.onDrag(viewX, viewY);
+    }
 
-  /**
+    /**
    * 触摸结束时调用
    *
    * @param pointX スクリーンX座標
    * @param pointY スクリーンY座標
    */
-  public onTouchesEnded(pointX: number, pointY: number): void {
+    public onTouchesEnded(): void {
     // 触摸结束
-    const live2DManager: Live2DManager = Live2DManager.getInstance();
-    live2DManager.onDrag(0.0, 0.0);
+        const live2DManager: Live2DManager = Live2DManager.getInstance();
+        live2DManager.onDrag(0.0, 0.0);
 
-    {
-      // 单击
-      const x: number = this._deviceToScreen.transformX(
-        this._touchManager.getX()
-      ); // 获取逻辑坐标转换后的坐标
-      const y: number = this._deviceToScreen.transformY(
-        this._touchManager.getY()
-      ); // 获取更改的坐标
+        {
+            // 单击
+            const x: number = this._deviceToScreen.transformX(
+                this._touchManager.getX()
+            ); // 获取逻辑坐标转换后的坐标
+            const y: number = this._deviceToScreen.transformY(
+                this._touchManager.getY()
+            ); // 获取更改的坐标
 
-      if (LAppDefine.DebugTouchLogEnable) {
-        Utils.printMessage(`[APP]touchesEnded x: ${x} y: ${y}`);
-      }
-      live2DManager.onTap(x, y);
+            if (LAppDefine.DebugTouchLogEnable) {
+                Utils.printMessage(`[APP]touchesEnded x: ${x} y: ${y}`);
+            }
+            live2DManager.onTap(x, y);
+        }
     }
-  }
 
-  /**
+    /**
    * 将X坐标转换为view坐标。
    *
    * @param deviceX デバイスX座標
    */
-  public transformViewX(deviceX: number): number {
-    const screenX: number = this._deviceToScreen.transformX(deviceX); // 获取逻辑坐标转换后的坐标。
-    return this._viewMatrix.invertTransformX(screenX); // 放大，缩小，移动后的值。
-  }
+    public transformViewX(deviceX: number): number {
+        const screenX: number = this._deviceToScreen.transformX(deviceX); // 获取逻辑坐标转换后的坐标。
+        return this._viewMatrix.invertTransformX(screenX); // 放大，缩小，移动后的值。
+    }
 
-  /**
+    /**
    * 将Y坐标转换为View坐标。
    *
    * @param deviceY デバイスY座標
    */
-  public transformViewY(deviceY: number): number {
-    const screenY: number = this._deviceToScreen.transformY(deviceY); // 获取逻辑坐标转换后的坐标。
-    return this._viewMatrix.invertTransformY(screenY);
-  }
+    public transformViewY(deviceY: number): number {
+        const screenY: number = this._deviceToScreen.transformY(deviceY); // 获取逻辑坐标转换后的坐标。
+        return this._viewMatrix.invertTransformY(screenY);
+    }
 
-  /**
+    /**
    * 将X坐标转换为屏幕坐标
    * @param deviceX デバイスX座標
    */
-  public transformScreenX(deviceX: number): number {
-    return this._deviceToScreen.transformX(deviceX);
-  }
+    public transformScreenX(deviceX: number): number {
+        return this._deviceToScreen.transformX(deviceX);
+    }
 
-  /**
+    /**
    * 将Y坐标转换为屏幕坐标。
    *
    * @param deviceY デバイスY座標
    */
-  public transformScreenY(deviceY: number): number {
-    return this._deviceToScreen.transformY(deviceY);
-  }
+    public transformScreenY(deviceY: number): number {
+        return this._deviceToScreen.transformY(deviceY);
+    }
 
   _touchManager: TouchManager; // 触摸管理器
   _deviceToScreen: Csm_CubismMatrix44; // 设备到屏幕的矩阵

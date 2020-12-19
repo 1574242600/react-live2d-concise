@@ -22,128 +22,128 @@ export let s_instance: Live2DManager = null;
  * モデル生成と破棄、タップイベントの処理
  */
 export class Live2DManager {
-  /**
+    /**
    * クラスのインスタンス（シングルトン）を返す。
    * インスタンスが生成されていない場合は内部でインスタンスを生成する。
    *
    * @return クラスのインスタンス
    */
-  public static getInstance(): Live2DManager {
-    if (s_instance == null) {
-      s_instance = new Live2DManager();
+    public static getInstance(): Live2DManager {
+        if (s_instance == null) {
+            s_instance = new Live2DManager();
+        }
+
+        return s_instance;
     }
 
-    return s_instance;
-  }
-
-  /**
+    /**
    * クラスのインスタンス（シングルトン）を解放する。
    */
-  public static releaseInstance(): void {
-    if (s_instance != null) {
-      s_instance = void 0;
+    public static releaseInstance(): void {
+        if (s_instance != null) {
+            s_instance = void 0;
+        }
+
+        s_instance = null;
     }
 
-    s_instance = null;
-  }
-
-  /**
+    /**
    * 画面をドラッグした時の処理
    *
    * @param x 画面のX座標
    * @param y 画面のY座標
    */
-  public onDrag(x: number, y: number): void {
+    public onDrag(x: number, y: number): void {
 
-    const model: Model = this._model;
+        const model: Model = this._model;
 
-    if (model) {
-      model.setDragging(x, y);
+        if (model) {
+            model.setDragging(x, y);
+        }
     }
-  }
 
-  /**
+    /**
    * 画面をタップした時の処理
    *
    * @param x 画面のX座標
    * @param y 画面のY座標
    */
-  public onTap(x: number, y: number): void {
-    if (LAppDefine.DebugLogEnable) {
-      Utils.printMessage(
-        `[APP]tap point: {x: ${x.toFixed(2)} y: ${y.toFixed(2)}}`
-      );
+    public onTap(x: number, y: number): void {
+        if (LAppDefine.DebugLogEnable) {
+            Utils.printMessage(
+                `[APP]tap point: {x: ${x.toFixed(2)} y: ${y.toFixed(2)}}`
+            );
+        }
+
+        if (this._model.hitTest(LAppDefine.HitAreaNameHead, x, y)) {
+            if (LAppDefine.DebugLogEnable) {
+                Utils.printMessage(
+                    `[APP]hit area: [${LAppDefine.HitAreaNameHead}]`
+                );
+            }
+            this._model.setRandomExpression();
+        } else if (this._model.hitTest(LAppDefine.HitAreaNameBody, x, y)) {
+            if (LAppDefine.DebugLogEnable) {
+                Utils.printMessage(
+                    `[APP]hit area: [${LAppDefine.HitAreaNameBody}]`
+                );
+            }
+            this._model.startRandomMotion(
+                LAppDefine.MotionGroupTapBody,
+                LAppDefine.PriorityNormal,
+                this._finishedMotion
+            );
+        }
     }
 
-    if (this._model.hitTest(LAppDefine.HitAreaNameHead, x, y)) {
-      if (LAppDefine.DebugLogEnable) {
-        Utils.printMessage(
-          `[APP]hit area: [${LAppDefine.HitAreaNameHead}]`
-        );
-      }
-      this._model.setRandomExpression();
-    } else if (this._model.hitTest(LAppDefine.HitAreaNameBody, x, y)) {
-      if (LAppDefine.DebugLogEnable) {
-        Utils.printMessage(
-          `[APP]hit area: [${LAppDefine.HitAreaNameBody}]`
-        );
-      }
-      this._model.startRandomMotion(
-        LAppDefine.MotionGroupTapBody,
-        LAppDefine.PriorityNormal,
-        this._finishedMotion
-      );
-    }
-  }
-
-  /**
+    /**
    * 画面を更新するときの処理
    * モデルの更新処理及び描画処理を行う
    */
-  public onUpdate(): void {
-    let projection: Csm_CubismMatrix44 = new Csm_CubismMatrix44();
+    public onUpdate(): void {
+        let projection: Csm_CubismMatrix44 = new Csm_CubismMatrix44();
 
-    const { width, height } = canvas;
-    projection.scale(1.0, width / height);
+        const { width, height } = canvas;
+        projection.scale(1.0, width / height);
 
-    if (this._viewMatrix != null) {
-      projection.multiplyByMatrix(this._viewMatrix);
+        if (this._viewMatrix != null) {
+            projection.multiplyByMatrix(this._viewMatrix);
+        }
+
+        const saveProjection: Csm_CubismMatrix44 = projection.clone();
+
+        const model: Model = this._model;
+        projection = saveProjection.clone();
+
+        model.update();
+        model.draw(projection); // 参照渡しなのでprojectionは変質する。
+
     }
 
-    const saveProjection: Csm_CubismMatrix44 = projection.clone();
-
-    const model: Model = this._model;
-    projection = saveProjection.clone();
-
-    model.update();
-    model.draw(projection); // 参照渡しなのでprojectionは変質する。
-
-  }
-
-  public initialize(): void {
+    public initialize(): void {
     // model3.jsonのパスを決定する。
     // ディレクトリ名とmodel3.jsonの名前を一致させておくこと。
-    const model: string = LAppDefine.Model;
-    const modelPath: string = LAppDefine.ResourcesPath + model + '/';
-    let modelJsonName: string = LAppDefine.Model;
-    modelJsonName += '.model3.json';
+        const model: string = LAppDefine.Model;
+        const modelPath: string = LAppDefine.ResourcesPath + model + '/';
+        let modelJsonName: string = LAppDefine.Model;
+        modelJsonName += '.model3.json';
 
-    this._model.loadAssets(modelPath, modelJsonName);
-  }
+        this._model.loadAssets(modelPath, modelJsonName);
+    }
 
-  /**
+    /**
    * コンストラクタ
    */
-  constructor() {
-    this._viewMatrix = new Csm_CubismMatrix44();
-    this._model = new Model();
-    this.initialize()
-  }
+    constructor() {
+        this._viewMatrix = new Csm_CubismMatrix44();
+        this._model = new Model();
+        this.initialize();
+    }
 
   _viewMatrix: Csm_CubismMatrix44; // モデル描画に用いるview行列
   _model: Model;
   _finishedMotion = (self: ACubismMotion): void => {
-    Utils.printMessage('Motion Finished:');
-    console.log(self);
+      Utils.printMessage('Motion Finished:');
+      console.log(self);
   };
 }
