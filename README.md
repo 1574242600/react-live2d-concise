@@ -58,8 +58,11 @@ Components:
 |id | Element id | string | undefined |
 |style | React CSS | React.CSSProperties | undefined |
 <br />
+
 ---------------------------------------------------------------------------------
+
 toBlob()
+
 ```js
 /**
  * Replace all resource urls in the model json with blob url
