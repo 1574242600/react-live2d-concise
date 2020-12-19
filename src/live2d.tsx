@@ -19,6 +19,10 @@ export default class Live2d extends React.Component<Live2dProps> {
         Delegate.getInstance().run();
     }
 
+    componentWillUnmount() {
+        Delegate.releaseInstance();
+    }
+    
     render() {
         const { model , ...props } = this.props;
         return (<canvas {...props} ref={this.canvas}> </canvas>)
