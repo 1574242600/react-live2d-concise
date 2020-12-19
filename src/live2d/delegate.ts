@@ -14,7 +14,7 @@ import { View } from './view';
 import { Utils } from './utils';
 import { TextureManager } from './textureManager';
 import { Live2DManager } from './live2dManager';
-import * as LAppDefine from './define';
+import * as Define from './define';
   
 export let canvas: HTMLCanvasElement = null;
 export let s_instance: Delegate = null;
@@ -255,7 +255,7 @@ export class Delegate {
     public initializeCubism(): void {
         // setup cubism
         this._cubismOption.logFunction = Utils.printMessage;
-        this._cubismOption.loggingLevel = LAppDefine.CubismLoggingLevel;
+        this._cubismOption.loggingLevel = Define.CubismLoggingLevel;
         Csm_CubismFramework.startUp(this._cubismOption);
   
         // initialize cubism

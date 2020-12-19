@@ -15,7 +15,7 @@ import { Delegate, canvas, gl } from './delegate';
 import { Sprite } from './sprite';
 import { TextureInfo } from './textureManager';
 import { Utils } from './utils';
-import * as LAppDefine from './define';
+import * as Define from './define';
 
 /**
  * 绘画类
@@ -45,8 +45,8 @@ export class View {
         const { width, height } = canvas;
 
         const ratio: number = height / width;
-        const left: number = LAppDefine.ViewLogicalLeft;
-        const right: number = LAppDefine.ViewLogicalRight;
+        const left: number = Define.ViewLogicalLeft;
+        const right: number = Define.ViewLogicalRight;
         const bottom: number = -ratio;
         const top: number = ratio;
 
@@ -57,15 +57,15 @@ export class View {
         this._deviceToScreen.translateRelative(-width * 0.5, -height * 0.5);
 
         // 显示范围设定
-        this._viewMatrix.setMaxScale(LAppDefine.ViewMaxScale); // 限界拡張率
-        this._viewMatrix.setMinScale(LAppDefine.ViewMinScale); // 限界縮小率
+        this._viewMatrix.setMaxScale(Define.ViewMaxScale); // 限界拡張率
+        this._viewMatrix.setMinScale(Define.ViewMinScale); // 限界縮小率
 
         // 可显示的最大范围
         this._viewMatrix.setMaxScreenRect(
-            LAppDefine.ViewLogicalMaxLeft,
-            LAppDefine.ViewLogicalMaxRight,
-            LAppDefine.ViewLogicalMaxBottom,
-            LAppDefine.ViewLogicalMaxTop
+            Define.ViewLogicalMaxLeft,
+            Define.ViewLogicalMaxRight,
+            Define.ViewLogicalMaxBottom,
+            Define.ViewLogicalMaxTop
         );
     }
 
@@ -105,16 +105,17 @@ export class View {
    * 初始化图像
    */
     public initializeSprite(): void {
+        /*
         const width: number = canvas.width;
         const height: number = canvas.height;
 
         const textureManager = Delegate.getInstance().getTextureManager();
-        const resourcesPath = LAppDefine.ResourcesPath;
+        const resourcesPath = Define.ResourcesPath;
 
         let imageName = '';
 
         // 背景画像初期化
-        imageName = LAppDefine.BackImageName;
+        imageName = Define.BackImageName;
 
         // 创建一个回调函数，因为它是异步的
         const initBackGroundTexture = (textureInfo: TextureInfo): void => {
@@ -135,7 +136,7 @@ export class View {
         // 创建着色器
         if (this._programId == null) {
             this._programId = Delegate.getInstance().createShader();
-        }
+        }*/
     }
 
     /**
@@ -184,7 +185,7 @@ export class View {
                 this._touchManager.getY()
             ); // 获取更改的坐标
 
-            if (LAppDefine.DebugTouchLogEnable) {
+            if (Define.DebugTouchLogEnable) {
                 Utils.printMessage(`[APP]touchesEnded x: ${x} y: ${y}`);
             }
             live2DManager.onTap(x, y);
