@@ -12,7 +12,6 @@ import Csm_CubismMatrix44 = cubismMatrix44.CubismMatrix44;
 import { TouchManager } from './touchManager';
 import { Live2DManager } from './live2dManager';
 import { canvas, gl } from './delegate';
-import { Sprite } from './sprite';
 import { Utils } from './utils';
 import * as Define from './define';
 
@@ -25,7 +24,6 @@ export class View {
    */
     constructor() {
         this._programId = null;
-        this._back = null;
 
         // 触控相关事件管理
         this._touchManager = new TouchManager();
@@ -75,9 +73,6 @@ export class View {
         this._viewMatrix = null;
         this._touchManager = null;
         this._deviceToScreen = null;
-    
-        this._back.release();
-        this._back = null;
 
         gl.deleteProgram(this._programId);
         this._programId = null;
@@ -88,10 +83,6 @@ export class View {
    */
     public render(): void {
         gl.useProgram(this._programId);
-
-        if (this._back) {
-            this._back.render(this._programId);
-        }
 
         gl.flush();
 
@@ -232,7 +223,6 @@ export class View {
   _deviceToScreen: Csm_CubismMatrix44; // 设备到屏幕的矩阵
   _viewMatrix: Csm_CubismViewMatrix; // viewMatrix
   _programId: WebGLProgram; // 阴影ID
-  _back: Sprite; // 背景图片
   _changeModel: boolean; // 模型切换标志
   _isClick: boolean; // 单击
 }
