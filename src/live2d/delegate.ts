@@ -14,8 +14,9 @@ import { View } from './view';
 import { Utils } from './utils';
 import { TextureManager } from './textureManager';
 import { Live2DManager } from './live2dManager';
+import { Live2dProps } from '../define';
 import * as Define from './define';
-  
+
 export let canvas: HTMLCanvasElement = null;
 export let s_instance: Delegate = null;
 export let gl: WebGLRenderingContext = null;
@@ -83,16 +84,33 @@ export class Delegate {
   
         if (supportTouch) {
         // タッチ関連コールバック関数登録
-            canvas.ontouchstart = onTouchBegan;
-            canvas.ontouchmove = onTouchMoved;
-            canvas.ontouchend = onTouchEnded;
-            canvas.ontouchcancel = onTouchCancel;
+            const ontouchstart: Live2dProps['on']['ontouchstart'] = canvas.ontouchstart;
+            canvas.ontouchstart = canvas.ontouchstart === null ? onTouchBegan : (e) => { onTouchBegan(e);  ontouchstart(e); };
+
+            const ontouchmove: Live2dProps['on']['ontouchmove'] = canvas.ontouchmove;
+            canvas.ontouchmove = canvas.ontouchmove === null ? onTouchMoved : (e) => { onTouchMoved(e);  ontouchmove(e); };
+
+            const ontouchend: Live2dProps['on']['ontouchend'] = canvas.ontouchend;
+            canvas.ontouchend = canvas.ontouchend === null ? onTouchEnded : (e) => { onTouchEnded(), ontouchend(e); };
+
+            const ontouchcancel: Live2dProps['on']['ontouchcancel'] = canvas.ontouchcancel;
+            canvas.ontouchcancel = canvas.ontouchcancel === null ? onTouchCancel : (e) => { onTouchCancel(), ontouchcancel(e); };
         } else {
         // マウス関連コールバック関数登録
-            canvas.onmousedown = onClickBegan;
-            // canvas.onmousemove = onMouseMoved;
-            window.onmousemove = onMouseMoved;
-            canvas.onmouseup = onClickEnded;
+            const onmousedown: Live2dProps['on']['onmousedown'] = canvas.onmousedown;
+            canvas.onmousedown = canvas.onmousedown === null ? onClickBegan : (e) => { onClickBegan(e); onmousedown(e); };
+            
+            const onmousemove: Live2dProps['on']['onmousemove'] = canvas.onmousemove as unknown as Live2dProps['on']['onmousemove'];
+            if ( onmousemove instanceof Array && onmousemove[0]) { 
+                window.onmousemove = (e) => { onMouseMoved(e); onmousemove[1](e); };
+            } else if(onmousemove instanceof Array && !onmousemove[0]) {
+                canvas.onmousemove = (e) => { onMouseMoved(e); onmousemove[1](e); };
+            } else {
+                window.onmousemove = canvas.onmousemove === null ? onMouseMoved : (e) => { onMouseMoved(e); onmousemove[1](e); };
+            }
+            
+            const onmouseup: Live2dProps['on']['onmouseup'] = canvas.onmouseup;
+            canvas.onmouseup = canvas.onmouseup === null ? onClickEnded : (e) => { onClickEnded(); onmouseup(e);};
         }
   
         // AppViewの初期化
@@ -137,7 +155,7 @@ export class Delegate {
   
             // 画面の初期化
             gl.clearColor(0, 0, 0, 0);
-  
+            
             // 深度テストを有効化
             gl.enable(gl.DEPTH_TEST);
   
@@ -152,10 +170,9 @@ export class Delegate {
             // 透過設定
             gl.enable(gl.BLEND);
             gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-  
             // 描画更新
             this._view.render();
-  
+            
             // ループのために再帰呼び出し
             requestAnimationFrame(loop);
         };

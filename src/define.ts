@@ -1,4 +1,5 @@
 import React from 'react';
+import { Model } from './live2d/model';
 
 export let modelBlobUrl: string = null;
 
@@ -21,6 +22,19 @@ export interface Live2dProps {
     className?: string;
     id?: string;
     style?: React.CSSProperties;
+    on?: {
+        ontouchstart?: (e: TouchEvent) => void,
+        ontouchmove?: (e: TouchEvent) => void,
+        ontouchend?: (e: TouchEvent) => void,
+        ontouchcancel?: (e: TouchEvent) => void ,
+        onmousemove?: [
+            isWindow: boolean, 
+            onmousemove: (e: MouseEvent) => void
+        ],
+        onmouseup?: (e: MouseEvent) => void,
+        onmousedown?: (e: MouseEvent) => void,
+        onTap?: (x: number, y: number, model: Model) => void,
+    }
 }
 
 export interface model3Motion {
