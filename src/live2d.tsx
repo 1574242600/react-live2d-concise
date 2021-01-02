@@ -11,9 +11,18 @@ export default class Live2d extends React.Component<Live2dProps> {
         super(props);
     }
 
+    bindOn(canves: HTMLCanvasElement): void {
+        for (const v in this.props.on) {
+            canves[v] = this.props.on[v];
+        }
+    }
+
     componentDidMount(): void {
+        const canves = this.canvas.current;
         setModelBlobUrl(this.props.model[0]);
-        if (Delegate.getInstance().initialize(this.canvas.current) == false) {
+
+        this.bindOn(canves);
+        if (Delegate.getInstance().initialize(canves) == false) {
             return;
         }
 
