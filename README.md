@@ -47,7 +47,7 @@ class App extends React.Component {
 ```
 
 ## Demo
-demo1: https://nworm.icu/react-live2d-concise/demo1/
+demo1: [https://vy9ge.csb.app/](https://vy9ge.csb.app/)
 
 
 ## Documentation
