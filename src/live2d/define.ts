@@ -37,7 +37,7 @@ export const PriorityNormal = 2;
 export const PriorityForce = 3;
 
 // デバッグ用ログの表示オプション
-export const DebugLogEnable = true;
+export const DebugLogEnable = false;
 export const DebugTouchLogEnable = false;
 
 // Frameworkから出力するログのレベル設定
