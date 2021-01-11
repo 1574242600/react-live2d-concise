@@ -13,17 +13,25 @@ export default class Live2d extends React.Component<Live2dProps> {
         super(props);
     }
 
-    bindOn(canves: HTMLCanvasElement): void {
+    bindCanvesEvents(canves: HTMLCanvasElement): void {
         for (const v in this.props.on) {
             canves[v] = this.props.on[v];
         }
+    }
+
+    unbindCanvesEvents(canves: HTMLCanvasElement): void {
+        for (const v in this.props.on) {
+            canves[v] = null;
+        }
+
+        window.onmousemove = null; //可能副作用有点大。。。2333
     }
 
     componentDidMount(): void {
         const canves = this.canvas.current;
         setModelBlobUrl(this.props.model[0]);
 
-        this.bindOn(canves);
+        this.bindCanvesEvents(canves);
         if (Delegate.getInstance().initialize(canves) == false) {
             return;
         }
@@ -32,6 +40,9 @@ export default class Live2d extends React.Component<Live2dProps> {
     }
 
     componentWillUnmount(): void {
+        const canves = this.canvas.current;
+
+        this.unbindCanvesEvents(canves);
         Delegate.releaseInstance();
     }
 
@@ -43,5 +54,6 @@ export default class Live2d extends React.Component<Live2dProps> {
 
 Live2d.defaultProps = {
     width: 1280,
-    height: 720
+    height: 720,
+    on: {}
 };
