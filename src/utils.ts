@@ -1,4 +1,4 @@
-import { model3Object, model3Motion } from './define';
+import { model3Object, model3Motion } from './type';
 
 /**
  * 将模型json里所有资源 url 替换为 blob url

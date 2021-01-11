@@ -1,6 +1,8 @@
 import React from 'react';
-import { Live2dProps, Live2dDefaultProps, setModelBlobUrl } from './define';
+import { setModelBlobUrl } from './define';
 import { Delegate } from './live2d/delegate';
+import { Live2dDefaultProps, Live2dProps } from './type';
+
 
 
 export default class Live2d extends React.Component<Live2dProps> {
