@@ -7,11 +7,14 @@ npm install react-live2d-concise -save
 ```
 
 ## 使用
-需要先引用 live2dcubismcore.js
+需要先引用 live2dcubismcore.js  
+
 ```html
 <script src="https://cdn.jsdelivr.net/gh/1574242600/react-live2d-concise/lib/Core/live2dcubismcore.min.js"></script>
 ```
-然后就像其他需要请求数据的组件一样使用
+
+然后就像其他需要请求数据的组件一样使用  
+
 ```js
 import React from 'react';
 import Live2d, { toBlob } from 'react-live2d-concise';
@@ -25,22 +28,24 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-        //模型入口json 的绝对地址
-        //文件名没有要求
-        toBlob('http://*.*/*.model3.json').then((blobUrl) => {
-            this.setState({
-                blobUrl: blobUrl
-            })
-        })
-    }
-    render() {
+    //模型入口json 的绝对地址
+    //文件名没有要求
+    toBlob('http://*.*/*.model3.json').then((blobUrl) => {
+      this.setState({
+          blobUrl: blobUrl
+      })
+    })
+  }
+
+  render() {
     const { blobUrl } = this.state;
 
     return (
-        <div>
-            { blobUrl !== null && <Live2d model={[blobUrl]} />}
-        </div>);
-    }
+      <div>
+        { blobUrl !== null && <Live2d model={[blobUrl]} />}
+      </div>
+    );
+  }
 }
 
 ```
@@ -53,15 +58,32 @@ demo3(事件监听): [https://mxgp5.csb.app/](https://mxgp5.csb.app/)
 ## 文档
 组件:  
 
-|属性 |说明                           |类型              |默认值             |
-|---------|-------------------------------|------------------|------------------|
-|model    | model blob url 和 model name | [string, string] | [必选, undefined]  |
-|width    | HTMLCanvasElement.width      | string \| number | 1280              |
-|height   | HTMLCanvasElement.height     | string \| number | 720               |
-|className| React classNam               | string           | undefined         |
-|id       | Element id                   | string           | undefined         |
-|style    | React CSS                    | React.CSSProperties | undefined      |
+| 属性      | 说明                       | 类型                | 默认值            |
+| --------- | -------------------------- | ------------------- | ----------------- |
+| model     | 模型 blob url 和 模型 name | [string, string]    | [必选, undefined] |
+| on        | canvas dom 事件            | object              | undefined         |
+| width     | HTMLCanvasElement.width    | string \| number    | 1280              |
+| height    | HTMLCanvasElement.height   | string \| number    | 720               |
+| className | React className            | string              | undefined         |
+| id        | Element id                 | string              | undefined         |
+| style     | React CSS                  | React.CSSProperties | undefined         |
 <br />
+
+```js
+on?: {
+    ontouchstart?: (e: TouchEvent) => void,
+    ontouchmove?: (e: TouchEvent) => void,
+    ontouchend?: (e: TouchEvent) => void,
+    ontouchcancel?: (e: TouchEvent) => void ,
+    onmousemove?: [
+      isWindow: boolean,  // 是否在window上监听mousemove事件   如果在window上监听，请确保没有其它的js在window上监听mousemove事件
+      onmousemove: (e: MouseEvent) => void
+    ],
+    onmouseup?: (e: MouseEvent) => void,
+    onmousedown?: (e: MouseEvent) => void,
+    //onTap?: (x: number, y: number, model: Model) => void,
+}
+```
 
 ---------------------------------------------------------------------------------
 
