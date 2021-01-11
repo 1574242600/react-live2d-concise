@@ -5,6 +5,7 @@ export type ValueOf<T> = T[keyof T];
 export interface Live2dDefaultProps {
     width: string | number;
     height: string | number;
+    on: Live2dProps['on']
 }
 
 export interface Live2dProps {
